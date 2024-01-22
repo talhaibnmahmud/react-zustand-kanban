@@ -1,3 +1,4 @@
+import { mountStoreDevtool } from "simple-zustand-devtools";
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
 
@@ -36,3 +37,7 @@ export const useStore = createWithEqualityFn<TastStore>()(
   }),
   shallow
 );
+
+if (import.meta.env.DEV) {
+  mountStoreDevtool("Store", useStore);
+}
