@@ -11,7 +11,7 @@ type Task = {
   status: TaskStatus;
 };
 
-type TastStore = {
+export type TaskStore = {
   tasks: Task[];
   draggedTask: string | null;
   addTask: (task: Task) => void;
@@ -47,7 +47,7 @@ const loggerImpl: LoggerImpl = (f, name) => (set, get, store) => {
 
 export const logger = loggerImpl as unknown as Logger;
 
-export const useStore = createWithEqualityFn<TastStore>()(
+export const useStore = createWithEqualityFn<TaskStore>()(
   devtools(
     persist(
       logger(
