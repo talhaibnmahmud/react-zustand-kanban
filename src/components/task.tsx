@@ -14,11 +14,16 @@ export const Task = ({ title }: TaskProps) => {
     state.tasks.find((task) => task.title === title)
   );
   const deleteTask = useStore((state) => state.deleteTask);
+  const setDraggedTask = useStore((state) => state.setDraggedTask);
 
   if (!task) return null;
 
   return (
-    <Card className="space-y-2">
+    <Card
+      className="space-y-2 cursor-move"
+      draggable
+      onDragStart={() => setDraggedTask(task.title)}
+    >
       <CardContent className="py-2">
         <h3>{task.title}</h3>
       </CardContent>

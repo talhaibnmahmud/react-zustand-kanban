@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { useStore, type TaskStatus } from "@/stores";
 
 type ColumnProps = {
@@ -25,12 +26,36 @@ export const Column = ({ status }: ColumnProps) => {
   const tasks = useStore((state) =>
     state.tasks.filter((task) => task.status === status)
   );
+  const draggedTask = useStore((state) => state.draggedTask);
   const addTask = useStore((state) => state.addTask);
+  const setDraggedTask = useStore((state) => state.setDraggedTask);
+  const moveTask = useStore((state) => state.moveTask);
 
   const [title, setTitle] = useState("");
+  const [droppable, setDroppable] = useState(false);
 
   return (
-    <Card className="min-h-80 px-4 py-2 bg-zinc-100 space-y-4">
+    <Card
+      className={cn(
+        "min-h-80 px-4 py-2 bg-zinc-100 space-y-4",
+        droppable ? "outline-dashed outline-zinc-800" : ""
+      )}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setDroppable(true);
+      }}
+      onDragLeave={(e) => {
+        e.preventDefault();
+        setDroppable(false);
+      }}
+      onDrop={() => {
+        if (!draggedTask) return;
+
+        moveTask({ title: draggedTask, status: status });
+        setDraggedTask(null);
+        setDroppable(false);
+      }}
+    >
       <CardHeader className="flex-row justify-between items-center p-0">
         <CardTitle>{status}</CardTitle>
         <Dialog>
