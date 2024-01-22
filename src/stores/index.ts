@@ -1,4 +1,5 @@
 import { mountStoreDevtool } from "simple-zustand-devtools";
+import { devtools } from "zustand/middleware";
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
 
@@ -19,10 +20,11 @@ type TastStore = {
 };
 
 export const useStore = createWithEqualityFn<TastStore>()(
-  (set) => ({
+  devtools((set) => ({
     tasks: [{ title: "Test Task", status: "PLANNED" }],
     draggedTask: null,
-    addTask: (task) => set((store) => ({ tasks: [...store.tasks, task] })),
+    addTask: (task) =>
+      set((store) => ({ tasks: [...store.tasks, task] }), false, "addTask"),
     deleteTask: (title) =>
       set((store) => ({
         tasks: store.tasks.filter((task) => task.title !== title),
@@ -34,7 +36,7 @@ export const useStore = createWithEqualityFn<TastStore>()(
           task.title === title ? { title, status } : task
         ),
       })),
-  }),
+  })),
   shallow
 );
 
