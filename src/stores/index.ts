@@ -11,12 +11,17 @@ type Task = {
 type TastStore = {
   tasks: Task[];
   addTask: (task: Task) => void;
+  deleteTask: (title: string) => void;
 };
 
 export const useStore = createWithEqualityFn<TastStore>()(
   (set) => ({
     tasks: [{ title: "Test Task", status: "PLANNED" }],
     addTask: (task) => set((store) => ({ tasks: [...store.tasks, task] })),
+    deleteTask: (title) =>
+      set((store) => ({
+        tasks: store.tasks.filter((task) => task.title !== title),
+      })),
   }),
   shallow
 );

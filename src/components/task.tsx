@@ -1,5 +1,8 @@
+import { TrashIcon } from "@radix-ui/react-icons";
+
 import { Badge } from "@/components/ui/badge";
-import { CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useStore } from "@/stores";
 
 type TaskProps = {
@@ -10,19 +13,21 @@ export const Task = ({ title }: TaskProps) => {
   const task = useStore((state) =>
     state.tasks.find((task) => task.title === title)
   );
+  const deleteTask = useStore((state) => state.deleteTask);
 
   if (!task) return null;
 
   return (
-    <CardContent className="min-h-20 bg-white rounded-md py-2 px-2 flex flex-col justify-between">
-      <h3>{task.title}</h3>
-
-      <div>
-        <div></div>
-        <div className="flex justify-end">
-          <Badge className="bg-green-200 text-zinc-800">{task.status}</Badge>
-        </div>
-      </div>
-    </CardContent>
+    <Card className="space-y-2">
+      <CardContent className="py-2">
+        <h3>{task.title}</h3>
+      </CardContent>
+      <CardFooter className="flex justify-between py-2">
+        <Button variant="outline" onClick={() => deleteTask(task.title)}>
+          <TrashIcon className="size-4" />
+        </Button>
+        <Badge className="bg-green-200 text-zinc-800">{task.status}</Badge>
+      </CardFooter>
+    </Card>
   );
 };

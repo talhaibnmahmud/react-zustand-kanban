@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Task } from "@/components/task";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogClose,
@@ -88,9 +88,11 @@ export const Column = ({ status }: ColumnProps) => {
         </Dialog>
       </CardHeader>
 
-      {tasks.map((task) => (
-        <Task key={task.title} title={task.title} />
-      ))}
+      <CardContent className="px-0">
+        {tasks.map((task) => (
+          <Task key={task.title} title={task.title} />
+        ))}
+      </CardContent>
     </Card>
   );
 };
