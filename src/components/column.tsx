@@ -113,7 +113,7 @@ export const Column = ({ status }: ColumnProps) => {
         </Dialog>
       </CardHeader>
 
-      <CardContent className="px-0">
+      <CardContent className="px-0 space-y-2">
         {tasks.map((task) => (
           <Task key={task.title} title={task.title} />
         ))}
