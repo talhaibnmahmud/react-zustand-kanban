@@ -1,5 +1,5 @@
 import { mountStoreDevtool } from "simple-zustand-devtools";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
 
@@ -20,23 +20,28 @@ type TastStore = {
 };
 
 export const useStore = createWithEqualityFn<TastStore>()(
-  devtools((set) => ({
-    tasks: [{ title: "Test Task", status: "PLANNED" }],
-    draggedTask: null,
-    addTask: (task) =>
-      set((store) => ({ tasks: [...store.tasks, task] }), false, "addTask"),
-    deleteTask: (title) =>
-      set((store) => ({
-        tasks: store.tasks.filter((task) => task.title !== title),
-      })),
-    setDraggedTask: (title) => set(() => ({ draggedTask: title })),
-    moveTask: ({ title, status }: Task) =>
-      set((store) => ({
-        tasks: store.tasks.map((task) =>
-          task.title === title ? { title, status } : task
-        ),
-      })),
-  })),
+  devtools(
+    persist(
+      (set) => ({
+        tasks: [],
+        draggedTask: null,
+        addTask: (task) =>
+          set((store) => ({ tasks: [...store.tasks, task] }), false, "addTask"),
+        deleteTask: (title) =>
+          set((store) => ({
+            tasks: store.tasks.filter((task) => task.title !== title),
+          })),
+        setDraggedTask: (title) => set(() => ({ draggedTask: title })),
+        moveTask: ({ title, status }: Task) =>
+          set((store) => ({
+            tasks: store.tasks.map((task) =>
+              task.title === title ? { title, status } : task
+            ),
+          })),
+      }),
+      { name: "tastStore" }
+    )
+  ),
   shallow
 );
 
