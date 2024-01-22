@@ -1,3 +1,5 @@
+import { Badge } from "@/components/ui/badge";
+import { CardContent } from "@/components/ui/card";
 import { useStore } from "@/stores";
 
 type TaskProps = {
@@ -12,17 +14,15 @@ export const Task = ({ title }: TaskProps) => {
   if (!task) return null;
 
   return (
-    <div className="min-h-20 bg-white rounded-md py-2 px-2 flex flex-col justify-between">
+    <CardContent className="min-h-20 bg-white rounded-md py-2 px-2 flex flex-col justify-between">
       <h3>{task.title}</h3>
 
       <div>
         <div></div>
         <div className="flex justify-end">
-          <span className="bg-green-200 text-sm px-2 py-0.5 rounded-lg">
-            {task.status}
-          </span>
+          <Badge className="bg-green-200 text-zinc-800">{task.status}</Badge>
         </div>
       </div>
-    </div>
+    </CardContent>
   );
 };
