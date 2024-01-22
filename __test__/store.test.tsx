@@ -53,3 +53,32 @@ test("Should add an item to the store and rerun the effect", () => {
     })
   );
 });
+
+test("Should add an item to the store and rerun the effect", () => {
+  let createdTask = false;
+  const selector = (store: TaskStore) => ({
+    tasks: store.tasks,
+    addTask: store.addTask,
+    deleteTask: store.deleteTask,
+  });
+  let currentItems: ReturnType<typeof selector> | null = null;
+  const effect = vi
+    .fn()
+    .mockImplementation((items: ReturnType<typeof selector>) => {
+      currentItems = items;
+      if (!createdTask) {
+        items.addTask({ title: "Test Task", status: "PLANNED" });
+        createdTask = true;
+        return;
+      }
+      if (items.tasks.length > 0) {
+        items.deleteTask("Test Task");
+      }
+    });
+
+  render(<TestComponent selector={selector} effect={effect} />);
+  expect(effect).toHaveBeenCalledTimes(3);
+  expect(
+    (currentItems as unknown as ReturnType<typeof selector>).tasks
+  ).toEqual([]);
+});
