@@ -37,8 +37,10 @@ export const Column = ({ status }: ColumnProps) => {
   return (
     <Card
       className={cn(
-        "min-h-80 px-4 py-2 bg-zinc-100 space-y-4",
-        droppable ? "outline-dashed outline-zinc-800" : ""
+        "min-h-80 px-4 py-2 bg-zinc-50/30 backdrop-blur-3xl rounded-md shadow-md space-y-4 border-0 overflow-hidden",
+        droppable
+          ? "outline-dashed outline-2 outline-offset-2 outline-zinc-100"
+          : ""
       )}
       onDragOver={(e) => {
         e.preventDefault();

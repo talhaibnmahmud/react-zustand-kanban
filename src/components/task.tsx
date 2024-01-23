@@ -3,6 +3,7 @@ import { TrashIcon } from "@radix-ui/react-icons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { useStore } from "@/stores";
 
 type TaskProps = {
@@ -28,10 +29,25 @@ export const Task = ({ title }: TaskProps) => {
         <h3>{task.title}</h3>
       </CardContent>
       <CardFooter className="flex justify-between py-2">
-        <Button variant="outline" onClick={() => deleteTask(task.title)}>
+        <Button
+          variant="outline"
+          onClick={() => deleteTask(task.title)}
+          className="px-2 py-0"
+        >
           <TrashIcon className="size-4" />
         </Button>
-        <Badge className="bg-green-200 text-zinc-800">{task.status}</Badge>
+        <Badge
+          className={cn(
+            "text-white cursor-auto",
+            task.status === "PLANNED"
+              ? "bg-blue-500"
+              : task.status === "ONGOING"
+              ? "bg-orange-500"
+              : "bg-green-500"
+          )}
+        >
+          {task.status}
+        </Badge>
       </CardFooter>
     </Card>
   );
